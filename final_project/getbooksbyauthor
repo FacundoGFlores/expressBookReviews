@@ -1,0 +1,2 @@
+curl localhost:5000/author/Hans%20Christian%20Andersen
+{"author":"Hans Christian Andersen","title":"Fairy tales","reviews":{}}
