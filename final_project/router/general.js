@@ -22,44 +22,69 @@ public_users.post("/register", (req,res) => {
 });
 
 // Get the book list available in the shop
-public_users.get('/',function (req, res) {
-  return res.send(JSON.stringify(books))
+public_users.get('/', async function (req, res) {
+  try {
+    const data = await Promise.resolve(books);
+    res.json(data);
+  } catch {
+    res.status(500).send("Error");
+  }
 });
 
 // Get book details based on ISBN
-public_users.get('/isbn/:isbn',function (req, res) {
-  const isbn = req.params.isbn
-  const bookByIsbn = books[isbn]
+public_users.get("/isbn/:isbn", async (req, res) => {
+  try {
+    const { isbn } = req.params;
 
-  if(!bookByIsbn) {
-      return res.send("ISBN not found")
+    // simulate async access (future-proof)
+    const bookByIsbn = await Promise.resolve(books[isbn]);
+
+    if (!bookByIsbn) {
+      return res.status(404).send("ISBN not found");
+    }
+
+    return res.json(bookByIsbn);
+  } catch (err) {
+    return res.status(500).send("Internal Server Error");
   }
-
-  return res.send(bookByIsbn)
- });
+});
   
 // Get book details based on author
-public_users.get('/author/:author',function (req, res) {
-  const author = req.params.author 
-  const booksValues = Object.values(books)
+public_users.get("/author/:author", async (req, res) => {
+  try {
+    const { author } = req.params;
 
-  const bookByAuthor = booksValues.find(b => b.author === author)
-  if(!bookByAuthor) {
-    return res.send("Author not found")
+    const booksByAuthor = await Promise.resolve(
+      Object.values(books).filter(b => b.author === author)
+    );
+
+    if (booksByAuthor.length === 0) {
+      return res.status(404).send("Author not found");
+    }
+
+    return res.json(booksByAuthor);
+  } catch {
+    return res.status(500).send("Internal Server Error");
   }
-  return res.send(bookByAuthor)
 });
 
 // Get all books based on title
-public_users.get('/title/:title',function (req, res) {
-  const title = req.params.title 
-  const booksValues = Object.values(books)
+public_users.get("/title/:title", async (req, res) => {
+  try {
+    const { title } = req.params;
 
-  const bookByTitle = booksValues.find(b => b.title === title)
-  if(!bookByTitle) {
-    return res.send("Title not found")
+    const booksByTitle = await Promise.resolve(
+      Object.values(books).filter(b => b.title === title)
+    );
+
+    if (booksByTitle.length === 0) {
+      return res.status(404).send("Title not found");
+    }
+
+    return res.json(booksByTitle);
+  } catch {
+    return res.status(500).send("Internal Server Error");
   }
-  return res.send(bookByTitle)
 });
 
 //  Get book review
