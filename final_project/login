@@ -1,3 +1,2 @@
-curl -X POST http://localhost:5000/customer/login -H "Content-Type: application/json" -d '{"userna
-me":"pepe","password":"1234"}'
+curl -X POST http://localhost:5000/customer/login -H "Content-Type: application/json" -d '{"username":"pepe","password":"1234"}'
 User logged in successfully
