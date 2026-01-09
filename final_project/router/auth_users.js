@@ -21,10 +21,11 @@ regd_users.post("/login", (req,res) => {
     if(authenticatedUser(username,password)) {
       //create a JWT token
 
-      let token = jwt.sign({username: username}, 'my-secret-key', { expiresIn: '1h' });
+      let token = jwt.sign({username: username}, 'fingerprint_customer', { expiresIn: '1h' });
       req.session.authorization = {
         token, username
       }
+      console.log({token})
       return res.send("User logged in successfully");
     }
     else {
@@ -36,10 +37,9 @@ regd_users.post("/login", (req,res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   let isbn = req.params.isbn;
-  let review = req.query.review;
-    console.log("HELLO WORLDS")
-  console.log({s: req.session.authorization})
-  let username = req.session.authorization.username;
+  let review = req.body.review;
+
+  let username = req.user
 
   if(!username) {
     return res.status(400).json({message: 'User not logged in'})

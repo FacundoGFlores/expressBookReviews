@@ -1,0 +1,2 @@
+curl -X PUT http://localhost:5000/customer/auth/review/1 -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBlcGUiLCJpYXQiOjE3Njc5NjA1ODUsImV4cCI6MTc2Nzk2NDE4NX0.guAM9sdycf2Id3lsK-5CsRRpNENzuPTAc8YS7vbvuqQ" -d '{"review": "hello world"}'
+{"message":"Review added"}
